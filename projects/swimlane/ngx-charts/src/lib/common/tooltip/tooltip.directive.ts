@@ -16,6 +16,7 @@ import { StyleTypes } from './style.type';
 import { ShowTypes } from './show.type';
 
 import { TooltipService } from './tooltip.service';
+import { throttleable } from '../../utils/throttle';
 
 @Directive({ selector: '[ngx-tooltip]' })
 export class TooltipDirective implements OnDestroy {
@@ -76,6 +77,12 @@ export class TooltipDirective implements OnDestroy {
     if (this.listensForFocus) {
       this.hideTooltip(true);
     }
+  }
+
+  @HostListener('window:scroll')
+  @throttleable(100)
+  onWindowScroll(): void {
+    this.hideTooltip(true);
   }
 
   @HostListener('mouseenter')
